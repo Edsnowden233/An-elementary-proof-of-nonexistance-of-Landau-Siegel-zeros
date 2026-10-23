@@ -27,6 +27,41 @@ weighted sum over primes satisfying $\chi(p)=-1$.
 All constants are explicit. The exposition is intended for readers familiar
 with the material developed earlier in Apostol's book.
 
+## Background and Prior Work
+
+The classical background begins with Siegel's ineffective estimate for real
+zeros of Dirichlet $L$-functions and the Deuring--Heilbronn phenomenon.
+Later elementary treatments include work of Pintz and Stopple. The
+nonvanishing and interpolation-determinant ideas used in this area have
+antecedents in work of Stepanov, Masser, Laurent, and Bombieri--Vaaler.
+
+The immediate line of work to which this exposition belongs includes the
+OpenAI Math Release, and subsequent accounts or refinements by Green, Banks,
+Kerr, Tao, and van Dijk, together with the Stepanov-type presentation posted
+by J. Pescador. The integer-minor construction and the refinement stated in
+Exercise 23 are attributed to K. Barreto through those later accounts. This
+note claims no new theorem or priority.
+
+Selected references:
+
+- [Tom M. Apostol, *Introduction to Analytic Number Theory* (1976)](https://doi.org/10.1007/978-1-4757-5579-4)
+- [Hugh L. Montgomery and Robert C. Vaughan, *Multiplicative Number Theory I: Classical Theory* (2006)](https://doi.org/10.1017/CBO9780511618314)
+- [OpenAI, *Uniform exclusion of Landau--Siegel zeros* (2026)](https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Uniform-exclusion-of-Landau-Siegel-zeros-October-1-2026/paper.pdf)
+- [Ben Green, *On Landau--Siegel zeros* (2026)](https://hexagonmath.org/2610.00311v2)
+- [GPT-6 Pro and Claude Opus 5.5, *Landau--Siegel zeros and a Stepanov-type nonvanishing lemma* (2026)](https://jacobpescador.github.io/ai-math/papers/landau-siegel-stepanov/)
+- [William D. Banks, *On the OpenAI proof that Landau--Siegel zeros do not exist* (2026)](https://arxiv.org/abs/2610.15483v1)
+- [Bryce Kerr, *A simpler proof that there are no Landau--Siegel zeros* (2026)](https://arxiv.org/abs/2610.21099v1)
+- [Terence Tao, *A sketch of the proof of non-existence of Siegel zeroes* (2026)](https://terrytao.wordpress.com/2026/10/19/a-sketch-of-the-proof-of-non-existence-of-siegel-zeroes/)
+- [Roelof van Dijk, *A Frobenius determinant proof of the non-existence of Landau--Siegel zeros* (2026)](https://hexagonmath.org/2610.00409v2)
+- [C. L. Siegel, *Über die Classenzahl quadratischer Zahlkörper* (1935)](https://doi.org/10.4064/aa-1-1-83-86)
+- [Jeffrey Stopple, *Elementary Deuring--Heilbronn phenomenon* (2012)](https://doi.org/10.4064/aa156-3-5)
+- [Sergei A. Stepanov, *On the number of points of a hyperelliptic curve over a finite prime field* (1969)](https://doi.org/10.1070/IM1969v003n05ABEH000834)
+- [David Masser, *On polynomials and exponential polynomials in several complex variables* (1981)](https://doi.org/10.1007/BF01389194)
+- [Enrico Bombieri and Jeffrey Vaaler, *On Siegel's lemma* (1983)](https://eudml.org/doc/143033)
+
+The article itself contains the full bibliography and more detailed
+attribution.
+
 ## AI Contributions
 
 GPT-6 Astra and GPT-5.6 Sol played a substantial role in the creation of this
