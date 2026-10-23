@@ -1,14 +1,15 @@
-# Real Characters and Real Zeros
+# An elementary proof of nonexistence of Landau Siegel zeros
 
 An expository continuation of Chapter 10 of Tom M. Apostol's
 *Introduction to Analytic Number Theory*, covering Sections 10.14--10.21.
 
-[Read the PDF](output/pdf/apostol_chapter10_sections_10_14_onward.pdf)
+[Read the PDF](apostol_chapter10_sections_10_14_onward.pdf)
 
 ## Overview
 
 This note develops an elementary and fully explicit argument for excluding
-real zeros of primitive Dirichlet $L$-functions that are too close to $1$.
+real zeros of primitive Dirichlet $L$-functions that are too close to $1$
+without complex analysis.
 Its main result is the following estimate:
 
 > Let $\chi$ be a real primitive character modulo $q$, where $q\ge 3$.
