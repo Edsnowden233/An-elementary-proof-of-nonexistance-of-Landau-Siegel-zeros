@@ -53,10 +53,7 @@ and preparing the LaTeX manuscript.
 
 ## Scope and attribution
 
-The section, theorem, and equation numbers continue those of Apostol's book
-for ease of cross-reference. This note is newly prepared companion material;
-it is not part of the original book. The original book and scans of it are not
-included in this repository.
+This note is a hypothetical continuation of Apostol's original book.
 
 The mathematical and historical sources used in preparing the note are listed
 in its references section. 
