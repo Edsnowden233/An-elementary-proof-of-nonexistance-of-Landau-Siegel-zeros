@@ -1,0 +1,1086 @@
+% !TeX program = xelatex
+\documentclass[11pt,twoside,leqno]{article}
+\usepackage[paperwidth=512bp,paperheight=798bp,inner=43bp,outer=44bp,
+ top=82bp,bottom=49bp,headheight=14pt,headsep=38bp]{geometry}
+\usepackage{fontspec}
+\usepackage{amsmath}
+\usepackage{unicode-math}
+\setmainfont{Times New Roman}[
+ Path=/mnt/c/Windows/Fonts/,Extension=.ttf,
+ UprightFont=*,BoldFont=*bd,ItalicFont=*i,BoldItalicFont=*bi]
+\setmathfont{TeX Gyre Termes Math}
+\usepackage{amsthm}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{needspace}
+\usepackage[hidelinks]{hyperref}
+\usepackage{bookmark}
+\hypersetup{pdftitle={Chapter 10: Sections 10.14--10.21},
+ pdfsubject={Real characters, triangular monomials, and real zeros of Dirichlet L-functions},
+ pdfauthor={A newly prepared continuation of Apostol's Chapter 10}}
+\setlength{\parindent}{1em}
+\setlength{\parskip}{0pt}
+\setlength{\emergencystretch}{2em}
+\raggedbottom
+\setlength{\abovedisplayskip}{8pt plus 2pt minus 2pt}
+\setlength{\belowdisplayskip}{8pt plus 2pt minus 2pt}
+\titleformat{\section}{\normalfont\fontsize{14}{16}\selectfont\bfseries}
+ {\thesection}{0.6em}{}
+\titlespacing*{\section}{0pt}{19pt plus 3pt minus 2pt}{7pt}
+\renewcommand{\thesection}{10.\arabic{section}}
+\setcounter{section}{13}
+\setcounter{equation}{25}
+\newtheoremstyle{apostol}{9pt}{9pt}{\itshape}{}{\bfseries}{}{0.5em}{}
+\theoremstyle{apostol}
+\newtheorem{theorem}{Theorem}
+\renewcommand{\thetheorem}{10.\arabic{theorem}}
+\setcounter{theorem}{15}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\renewcommand{\proofname}{\normalfont\scshape Proof}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE,RO]{\small 10: Primitive roots}
+\fancyfoot[LE,RO]{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\sectionmark}[1]{\markright{\thesection: #1}}
+\setlist[enumerate]{leftmargin=1.7em,itemsep=4pt,topsep=5pt}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\cO}{\mathcal O}
+\newcommand{\dd}{\,dt}
+\newcommand{\fl}[1]{\left[#1\right]}
+\newcommand{\ls}[2]{(#1\mid #2)}
+
+\begin{document}
+\setcounter{page}{224}
+
+\section{Real characters and real zeros}
+\label{sec:start}
+
+The foregoing sections describe the real characters and the primitive
+characters modulo a prime power. We now use these results to study the series
+\[
+ L(\sigma,\chi)=\sum_{n=1}^{\infty}\frac{\chi(n)}{n^\sigma},
+ \qquad \sigma>0,
+\]
+where \(\chi\) is a real nonprincipal character. By the convergence theorem
+(Theorem 6.17), this series converges for every real \(\sigma>0\), and in
+Section 6.10 we proved that \(L(1,\chi)\ne0\).
+
+A real zero near 1 is called an exceptional zero, or a Landau--Siegel zero.
+Siegel's theorem of 1935 implies that if \(\chi\) is a real primitive character
+mod \(q\) and \(L(\beta,\chi)=0\), where \(0<\beta<1\), then, for every
+\(\epsilon>0\),
+\[
+ 1-\beta>c(\epsilon)q^{-\epsilon},
+\]
+where \(c(\epsilon)>0\); his proof gives no method for calculating this
+constant, so the estimate is ineffective. Moreover, for fixed \(\epsilon>0\),
+\(q^{-\epsilon}\) becomes much smaller than \(1/\log q\) as \(q\) grows.
+Thus Siegel's theorem does not give a calculable constant \(c>0\) for which
+\(1-\beta\ge c/\log q\). Theorem~\ref{thm:main} gives such a result with
+\(c=10^{-6}\). Such a zero affects estimates for primes in arithmetic
+progressions, is closely related to class numbers of quadratic fields, and
+produces the Deuring--Heilbronn phenomenon. Unlike Siegel's class-number method,
+the proof below derives
+incompatible upper and lower estimates for the weighted primes with
+\(\chi(p)=-1\). Remarkably enough, the first uniform exclusion of
+Landau--Siegel zeros was obtained by an AI system \cite{openai}. The argument
+presented here follows
+the methods of \cite{openai,green,stepanovnote}; related accounts include
+\cite{barreto,banks,kerr,tao,vandijk}. The essential ideas of the proof can be
+explained by elementary methods accessible to readers familiar with the
+material of this book. We prove the following effective estimate.
+
+\begin{theorem}\label{thm:main}
+Let \(\chi\) be a real primitive character mod \(q\), where \(q\ge3\).
+If \(0<\beta<1\) and \(L(\beta,\chi)=0\), then
+\begin{equation}\label{eq:main}
+ (1-\beta)\log q\ge10^{-6}.
+\end{equation}
+\end{theorem}
+
+For \(X\ge2\), let
+\begin{equation}\label{eq:S}
+ S_-(X)=\sum_{\substack{p\le X\\\chi(p)=-1}}\frac{\log p}{p}.
+\end{equation}
+The proof of Theorem~\ref{thm:main} is based on two estimates for this sum.
+In Sections 10.17 and 10.18 we obtain an upper estimate by constructing a
+nonzero integer \(D\) with prescribed prime divisors. In Sections 10.19 and
+10.20 a zero \(\beta\) near 1 gives a lower estimate incompatible with the
+first. We complete the proof in Section 10.21. All constants are explicit.
+
+We first put a real primitive character into a form suitable for the
+congruence argument. Here and below \(\ls d p\) denotes the Legendre symbol
+of Chapter 9. The purpose of \(d\) is to turn the condition \(\chi(p)=-1\)
+into the elementary assertion that \(d\) is a quadratic nonresidue modulo
+\(p\). This will make the ring generated by \(\sqrt d\) useful modulo such
+primes.
+
+\begin{theorem}\label{thm:quadratic}
+For the character in Theorem~\ref{thm:main} there is a nonzero squarefree
+integer \(d\ne1\), with \(|d|\le q\), such that
+\[
+ \chi(p)=\ls d p\qquad(p\text{ odd prime},\ p\nmid q).
+\]
+\end{theorem}
+
+For example, the primitive real characters modulo 8 correspond to \(d=2\)
+and \(d=-2\). For the quadratic character modulo 5, one may take \(d=5\).
+
+\begin{proof}
+We first determine the form of \(q\). Suppose first that \(q=2^\alpha\).
+Since \(q\ge3\), we have \(\alpha\ge2\). For \(\alpha=2\), the discussion
+preceding Theorem 10.15 shows that the unique nonprincipal character mod \(4\)
+is primitive. If \(\alpha\ge3\), Theorem 10.13 shows that a real character
+\(\chi_{a,c}\) must have
+\[
+ c=\frac{\varphi(2^\alpha)}2=2^{\alpha-2}
+ \quad\hbox{or}\quad
+ c=\frac{\varphi(2^\alpha)}4=2^{\alpha-3},
+\]
+whereas Theorem 10.15 says that \(\chi_{a,c}\) is primitive if and only if
+\(c\) is odd. When \(\alpha=3\), the two values of \(c\) are \(2\) and \(1\),
+so the latter gives the primitive real characters mod \(8\). When
+\(\alpha\ge4\), both values are even, so no real character mod \(2^\alpha\)
+is primitive. Hence \(q=4\) or \(q=8\). If \(q\) is not a power of 2,
+its odd part is squarefree and its 2-part is 1, 4, or 8. Here is a hint for
+the verification left to the reader in Exercise 20. Factor the character into
+its prime-power components as at the end of Section 10.13. For an odd
+prime-power component, Theorems 10.12 and 10.14 rule out an exponent at least
+2; for the 2-power component, use Theorems 10.13 and 10.15, remembering that
+the only character mod \(2\) is induced from mod \(1\). Thus, in all cases,
+\[
+ q=2^a m,\qquad a=0,2,\text{ or }3,\qquad
+ m\text{ odd and squarefree}.
+\]
+For each odd prime \(r\mid m\), the factorization and primitivity criterion at
+the end of Section 10.13 show that the corresponding component modulo \(r\) is
+primitive. Theorem 10.12 then identifies it as the quadratic character. Put
+\(r^*=(-1)^{(r-1)/2}r\). Quadratic reciprocity and
+its supplementary law (Theorems 9.8 and 9.4) give
+\[
+ \ls{r^*}p=\ls p r\qquad(p\ne r,\ p\text{ odd prime}).
+\]
+For the factor \(2^a\), the possible primitive real characters, on odd
+integers \(n\), are
+\[
+ (-1)^{(n-1)/2},\qquad
+ (-1)^{(n^2-1)/8},\qquad
+ (-1)^{(n-1)/2+(n^2-1)/8},
+\]
+with conductors 4, 8, and 8, respectively. These are the characters
+constructed in Section 10.11. By Theorems 9.4 and 9.5 their
+values at an odd prime are \(\ls{-4}p,\ls8p,\ls{-8}p\), respectively.
+We choose \(D_2=1,-4,8\), or \(-8\), as required, and let
+\[
+ D_0=D_2\prod_{r\mid m}r^*.
+\]
+Then \(|D_0|=q\) and \(\chi(p)=\ls{D_0}p\) for every odd prime \(p\nmid q\).
+We take \(d=D_0\) if \(a=0\), and \(d=D_0/4\) otherwise. Since 4 is a
+square modulo every odd prime, this does not change the Legendre symbol.
+This \(d\) is squarefree and \(|d|\le q\). If \(m>1\), an odd prime
+divides \(d\); if \(m=1\), its possible values are \(-1,2,-2\).
+Hence \(d\ne1\), as required.
+\end{proof}
+
+\section{Elementary estimates with constants}
+\label{sec:estimates}
+
+We shall use the functions \(\psi(x)\) and \(\vartheta(x)\) of Section
+4.2 and the Mangoldt function \(\Lambda(n)\) of Section 2.8.
+Theorem 4.10 supplies the estimates
+\(\vartheta(x)=O(x)\) and
+\(\sum_{p\le x}(\log p)/p=\log x+O(1)\).
+To obtain the numerical constant in \eqref{eq:main}, we need explicit
+versions of these estimates. The following elementary bounds will suffice.
+
+\begin{theorem}\label{thm:primeestimates}
+For every real \(x\ge2\),
+\begin{equation}\label{eq:primeestimates}
+ \vartheta(x)\le\psi(x)\le4x,\qquad
+ \log x-5\le\sum_{p\le x}\frac{\log p}{p}\le\log x+5.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Let \(v_p(N)\) denote the exponent of \(p\) in the nonzero integer \(N\).
+Legendre's identity (Theorem 3.14) gives
+\[
+ v_p\binom{2m}{m}
+ =\sum_{j\ge1}\left(\fl{2m/p^j}-2\fl{m/p^j}\right)
+ \qquad(m\ge1).
+\]
+Every summand is 0 or 1, and it is 1 if \(m<p^j\le2m\). Therefore
+\[
+ \psi(2m)-\psi(m)\le\log\binom{2m}{m}\le2m\log2.
+\]
+The last inequality follows from
+\(\binom{2m}{m}\le\sum_{j=0}^{2m}\binom{2m}j=2^{2m}\).
+We prove \(\psi(n)\le4n\) by induction. It holds at \(n=1\).
+For \(n\ge2\), let \(m=\fl{(n+1)/2}<n\). Then
+\[
+ \psi(n)\le\psi(2m)\le\psi(m)+2m\log2<6m\le4n.
+\]
+This proves \(\psi(n)\le4n\) for integral \(n\). If \(x\) is real, apply
+this result with \(n=\fl x\).
+
+The factorial identity (Theorem 3.12) gives, for an integer \(n\ge1\),
+\[
+ \log(n!)=\sum_{j\le n}\Lambda(j)\fl{n/j}.
+\]
+Since \(0\le n/j-\fl{n/j}<1\), it follows that
+\[
+ \frac{\log(n!)}n\le\sum_{j\le n}\frac{\Lambda(j)}j
+ \le\frac{\log(n!)}n+\frac{\psi(n)}n.
+\]
+The integral comparison
+\(n\log n-n+1\le\log(n!)\le n\log n\) now gives
+\[
+ \log n-1\le\sum_{j\le n}\frac{\Lambda(j)}j\le\log n+4.
+\]
+The prime powers of exponent at least 2 contribute at most
+\begin{align*}
+ \sum_p\sum_{a\ge2}\frac{\log p}{p^a}
+ &=\sum_p\frac{\log p}{p(p-1)}
+ \le2\sum_{j=2}^{\infty}\frac{\log j}{j^2}\\
+ &\le2\left(\frac{\log2}{4}
+       +\int_2^\infty\frac{\log t}{t^2}\dd\right)<3.
+\end{align*}
+The integral comparison is valid since \((\log t)/t^2\) decreases
+for \(t\ge2\). Consequently the prime sum at an integer \(n\) lies
+between \(\log n-4\) and \(\log n+4\). For real \(x\ge2\), we take
+\(n=\fl x\). Then \(x/2\le n\le x\), so
+\(\log x-1<\log n\le\log x\). This proves
+\eqref{eq:primeestimates}.
+\end{proof}
+
+\section{The Frobenius congruence and root counting}
+\label{sec:frobenius}
+
+For a prime with \(\chi(p)=-1\), the integer \(d\) is a quadratic
+nonresidue modulo \(p\). Consequently the two-coordinate ring used below
+becomes a field modulo \(p\), and the Frobenius map sends each element to its
+conjugate. A differentiated form of this identity will later force powers of
+\(p\) to divide the rows of an integer matrix.
+
+Fix the integer \(d\) of Theorem~\ref{thm:quadratic}, and write
+\[
+ \cO=\Z[\sqrt d]=\{a+b\sqrt d:a,b\in\Z\}.
+\]
+The coordinates \(a,b\) are unique. If \(\alpha=a+b\sqrt d\), write
+\(\alpha'=a-b\sqrt d\). For negative \(d\), the square root is
+taken in the complex numbers. Congruence modulo \(p\cO\) means
+congruence of both integer coordinates modulo \(p\).
+We use \(\cO\) only as a ring of pairs of integers; no theory of algebraic
+integers or ideals is needed. Modulo \(p\cO\), it has the \(p^2\) classes
+\(a+b\theta\), where \(a,b\) are integers mod \(p\) and \(\theta^2=d\).
+
+If \(F(z,w)\) is a polynomial, \(F^{(j)}(z,w)\) will denote its \(j\)th
+derivative with respect to \(z\), with \(w\) held fixed.
+
+\begin{lemma}\label{lem:residuefield}
+If \(p\) is odd and \(\chi(p)=-1\), the residue classes modulo \(p\cO\)
+form a field of characteristic \(p\).
+\end{lemma}
+
+\begin{proof}
+Every residue class has the form \(a+b\theta\), where \(a,b\) are
+integers mod \(p\) and \(\theta^2=d\). A nonzero class has inverse
+\[
+ (a+b\theta)^{-1}=\frac{a-b\theta}{a^2-db^2}.
+\]
+The denominator does not vanish. For if \(b\ne0\), its vanishing would
+give \(d=(a/b)^2\), contrary to \(\ls d p=-1\); and if \(b=0\), then
+\(a\ne0\). Hence every nonzero class has an inverse, as asserted.
+\end{proof}
+
+\begin{theorem}\label{thm:frobenius}
+If \(p\) is odd and \(\chi(p)=-1\), then
+\begin{equation}\label{eq:frobenius}
+ \alpha^p\equiv\alpha'\pmod{p\cO}\qquad(\alpha\in\cO).
+\end{equation}
+Moreover, for every \(\alpha\in\cO\), if \(G(z,w)\) has integer coefficients
+and \(h,j\) are nonnegative integers, then
+\begin{equation}\label{eq:stable}
+ \bigl(G(z,w)(z^p-w)^h\bigr)^{(j)}\big|_{(\alpha,\alpha')}
+       \in p^h\cO.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Since \(\binom pj\) is divisible by \(p\) for \(0<j<p\), the binomial
+theorem, Fermat's theorem, and Euler's criterion (Theorems 5.19 and 9.2) give
+\[
+ (a+b\sqrt d)^p\equiv a+b\,d^{(p-1)/2}\sqrt d
+ \equiv a-b\sqrt d\pmod{p\cO}.
+\]
+This proves \eqref{eq:frobenius}. Also
+\[
+ (z^p-w)^{(j)}=
+ \begin{cases}
+ p(p-1)\cdots(p-j+1)z^{p-j},&1\le j\le p,\\
+ 0,&j>p.
+ \end{cases}
+\]
+At \((\alpha,\alpha')\), every derivative of \(z^p-w\), including the
+derivative of order zero, is therefore in \(p\cO\). When we apply the
+product rule to \(G(z,w)(z^p-w)^h\), every term contains a derivative
+of each of the \(h\) factors \(z^p-w\), and hence contains \(h\) factors
+of \(p\). This proves \eqref{eq:stable}.
+\end{proof}
+
+\noindent\textit{Note.} The derivatives in \eqref{eq:stable} are ordinary
+derivatives; they are not divided by \(j!\). Also, \(j\) need not be less
+than \(p\).
+
+\begin{lemma}\label{lem:roots}
+Let the coefficients of \(F(z,w)\) belong to a field \(K\) of prime
+characteristic \(P\), and let \(1\le m\le P\). Suppose the degree of
+\(F\) in \(z\) is less than \(P\), and its degree in \(w\) is less than
+\(m\). If
+\[
+ F^{(j)}(a,a^P)=0\qquad(0\le j<m)
+\]
+at \(P\) distinct elements \(a\in K\), then \(F=0\).
+\end{lemma}
+
+\begin{proof}
+Suppose \(F\ne0\), and let \(g(z)=F(z,z^P)\). Distinct monomials
+\(z^rw^s\) give distinct exponents \(r+Ps\), since \(0\le r<P\).
+Indeed, an equality \(r_1+Ps_1=r_2+Ps_2\) first gives \(r_1=r_2\)
+modulo \(P\), and then gives \(s_1=s_2\).
+Hence \(g\ne0\), and \(\deg g\le Pm-1\).
+The derivative of \(z^P\) is zero in characteristic \(P\), so
+\[
+ g^{(j)}(z)=F^{(j)}(z,z^P).
+\]
+If \(g(z)=\sum c_j(z-a)^j\), then \(g^{(j)}(a)=j!c_j\). Since
+\(j<m\le P\), none of \(0!,1!,\ldots,(m-1)!\) vanishes in \(K\).
+The hypotheses therefore imply that
+\((z-a)^m\) divides \(g(z)\). The factor theorem, used in the proof of
+Lagrange's theorem (Theorem 5.21), now shows that the \(P\) distinct
+values of \(a\) give \(\deg g\ge Pm\), a contradiction.
+\end{proof}
+
+\section{A determinant from triangular lattice points}
+\label{sec:determinant}
+
+We now prove the arithmetic estimate needed for
+Theorem~\ref{thm:main}.
+
+\begin{theorem}\label{thm:primeweight}
+For \(X\ge2\) and every integer \(k\ge3\),
+\begin{equation}\label{eq:primeweight}
+ S_-(X)\le\left(\frac12+\frac7{2k}\right)\log X
+               +\log q+\log k+23.
+\end{equation}
+\end{theorem}
+
+The construction has two distinct uses. The largest prime \(P\) will show
+that the rows of a matrix are independent, and hence that one integer minor
+\(D\) is nonzero with \(P\nmid D\). Every smaller prime \(p<P\) for which
+\(\chi(p)=-1\) will then force a large power of \(p\) to divide the same
+integer \(D\). Comparing these divisibilities with an upper bound for
+\(|D|\) will give the desired estimate for \(S_-(X)\).
+
+Let \(P\) be the largest odd prime not exceeding \(X\) for which
+\(\chi(P)=-1\). Thus the capital letter \(P\) denotes the prime used to
+prove that \(D\ne0\), whereas a lower-case \(p\) will later denote one of
+the smaller prime divisors forced upon \(D\). The construction is needed
+only when \(P\ge5\) and \(k\le P\); throughout this section we assume these
+inequalities and let \(n=P-1\).
+
+The weight \(r+ks\) is chosen with the later row operation in mind.
+Replacing one factor \(z^p\) by \(w\) changes an exponent pair by
+\((-p,1)\). When \(p\ge k\), this cannot increase \(r+ks\), so the
+following triangular set remains closed under that operation.
+
+Let \(\mathcal T\) be the set of pairs of nonnegative integers satisfying
+\[
+ \mathcal T=\{(r,s):r+ks\le n\},
+\]
+and write
+\[
+ t=|\mathcal T|,\quad U=\sum_{\mathcal T}r,\quad
+ V=\sum_{\mathcal T}s,\quad J=\fl{n/k},\quad m=J+1.
+\]
+Thus \(t\) is the number of allowed monomials, \(U\) and \(V\) are their
+total \(z\)- and \(w\)-degrees, \(J\) is the largest possible \(w\)-degree,
+and \(m=J+1\) is the number of derivative orders \(0,\ldots,J\) used at
+each point.
+Since \(n\ge4\), we have \(U>0\). Every polynomial of the form
+\[
+ \sum_{(r,s)\in\mathcal T}c_{rs}z^rw^s
+\]
+has degree less than \(P\) in \(z\) and less than \(m\) in \(w\). We shall
+use the inequalities
+\begin{equation}\label{eq:counts}
+ t\le P^2,\qquad nt\le3U,\qquad kV\le U.
+\end{equation}
+For a fixed \(s\), the reflection \(r\mapsto n-ks-r\) permutes the
+integers in the interval \(0\le r\le n-ks\); hence
+\[
+ 2\sum_{r=0}^{n-ks}r=(n-ks)(n-ks+1).
+\]
+Summing over \(s\), we obtain
+\[
+ 2U=\sum_{s=0}^J(n-ks)(n-ks+1)=nt-kV,
+\]
+and therefore \(2U+kV=nt\). To prove \(kV\le U\), we write \(r=ka+b\), where
+\(0\le b<k\). For each \(b\), the allowed pairs \((a,s)\) form the
+triangle \(a+s\le\fl{(n-b)/k}\), which is unchanged when \(a\) and \(s\)
+are interchanged. Hence
+\[
+ U=k\sum a+\sum b\ge k\sum s=kV,
+\]
+and consequently \(nt=2U+kV\le3U\). Also
+\(\mathcal T\subseteq\{0,\ldots,P-1\}^2\), so \(t\le P^2\).
+
+Let \(N=1+\fl{\sqrt P}\), and select \(P\) distinct pairs from the \(N^2\)
+pairs of integers \(0\le u,v<N\). To each chosen pair we associate
+\(\alpha=u+v\sqrt d\) and its conjugate \(\alpha'\). Their reductions
+modulo \(P\cO\) are distinct, since \(N\le P\), and
+Theorem~\ref{thm:frobenius} gives \(\alpha'=\alpha^P\) after reduction.
+Moreover,
+\[
+ |\alpha|,|\alpha'|<H,\qquad H=3\sqrt{qP},
+\]
+because \(N\le\sqrt P+1\le(3/2)\sqrt P\) and
+\(N(1+\sqrt{|d|})\le2N\sqrt q\).
+
+The matrix records the first \(m\) derivatives of every allowed monomial at
+the chosen conjugate pairs. More precisely, its rows are indexed by the pairs
+\((r,s)\in\mathcal T\). Its columns are indexed by the pairs
+\((\alpha,j)\), where \(\alpha\) runs through the \(P\) chosen points and
+\(0\le j\le J\). In row \((r,s)\) and column \((\alpha,j)\) we place
+\begin{equation}\label{eq:entries}
+ (z^rw^s)^{(j)}\big|_{(\alpha,\alpha')},
+\end{equation}
+Each entry belongs to \(\cO\). Replacing an entry \(a+b\sqrt d\) by its two
+integer coordinates \(a,b\), we obtain an integer matrix with \(t\) rows
+and \(2Pm\) columns.
+
+\begin{lemma}\label{lem:determinant}
+This integer matrix has a square minor \(D\) of order \(t\) such that
+\[
+ D\ne0\qquad\hbox{and}\qquad P\nmid D.
+\]
+\end{lemma}
+
+\begin{proof}
+Suppose the rows are linearly dependent modulo \(P\). Then there are
+coefficients \(c_{rs}\), not all zero, such that the polynomial
+\[
+ F(z,w)=\sum_{(r,s)\in\mathcal T}c_{rs}z^rw^s,
+\]
+has its first \(m\) derivative values equal to zero at the \(P\) distinct
+pairs \((a,a^P)\) in the field \(\cO/P\cO\) of
+Lemma~\ref{lem:residuefield}. Since \(m=\fl{(P-1)/k}+1\le P\),
+Lemma~\ref{lem:roots} gives \(F=0\). Hence every \(c_{rs}=0\), a
+contradiction. Therefore the rows are independent modulo \(P\), and some
+\(t\) columns determine a square minor which is nonzero modulo \(P\). Its
+determinant is the required integer \(D\).
+\end{proof}
+
+\section{An upper bound for \texorpdfstring{\(S_-(X)\)}{S-(X)}}
+\label{sec:arithmetic}
+
+\begin{proof}[\normalfont\scshape Proof of Theorem~\ref{thm:primeweight}]
+Let \(P\) have the meaning assigned in the foregoing section. If there is
+no such odd prime, or if \(P=3\), then
+\[
+ S_-(X)\le\frac{\log2}{2}+\frac{\log3}{3}<1,
+\]
+and the theorem follows. If \(k>P\), all the primes occurring in
+\(S_-(X)\) are less than \(k\), and Theorem~\ref{thm:primeestimates}
+gives \(S_-(X)\le\log k+5\). We may therefore assume that \(P\ge5\)
+and \(k\le P\), and we use the determinant \(D\) of
+Lemma~\ref{lem:determinant}.
+
+We now estimate this same integer \(D\) in two ways. Bounds for its entries
+give an upper bound for \(\log|D|\). On the other hand, each smaller prime
+\(p\) with \(\chi(p)=-1\) divides \(D\) to a known order. Prime
+factorization then gives a lower bound for \(\log|D|\).
+
+\medskip
+\noindent\textit{Size of the determinant.}
+A nonzero entry in row \((r,s)\) of \eqref{eq:entries} is
+\((r)_j\alpha^{r-j}(\alpha')^s\), where
+\((r)_j=r(r-1)\cdots(r-j+1)\). Since \(r\le n\), \(j\le J\), and
+\(H\ge1\), this entry and its conjugate have modulus at most
+\(n^JH^{r+s}\). If \(\gamma=a+b\sqrt d\) and \(\gamma'\) both have
+modulus at most \(M\), then
+\[
+ |a|=\left|\frac{\gamma+\gamma'}2\right|\le M,
+ \qquad
+ |b|=\left|\frac{\gamma-\gamma'}{2\sqrt d}\right|
+       \le\frac M{\sqrt{|d|}}\le M.
+\]
+The same bound therefore holds for both integer coordinates. Index the rows
+by \(i=1,\ldots,t\), and let \((r_i,s_i)\) be the pair in row \(i\). If
+\(a_{i\ell}\) is any integer entry in that row, the preceding estimate gives
+\[
+ |a_{i\ell}|\le n^JH^{r_i+s_i}.
+\]
+For the \(t\) columns defining \(D\), we have
+\(\sum_i r_i=U\) and \(\sum_i s_i=V\). The Leibniz formula now gives
+\begin{align*}
+ |D|
+ &=\left|\sum_{\pi\in\mathfrak S_t}\operatorname{sgn}(\pi)
+       \prod_{i=1}^t a_{i,\pi(i)}\right|\\
+ &\le\sum_{\pi\in\mathfrak S_t}\prod_{i=1}^t|a_{i,\pi(i)}|
+ \le t!\prod_{i=1}^t n^JH^{r_i+s_i}
+ =t!\,n^{Jt}H^{U+V}.
+\end{align*}
+Using \(\log(t!)\le t\log t\), \(J\le n/k\), and \eqref{eq:counts},
+we obtain
+\begin{align}
+ \frac{\log|D|}{U}
+ &\le\left(1+\frac1k\right)\log H
+       +\frac3k\log n+\frac{6\log P}{P-1}\notag\\
+ &\le\left(\frac12+\frac7{2k}\right)\log P+\log q+5.
+ \label{eq:size}
+\end{align}
+For the last inequality we used
+\(\log H=\tfrac12\log P+\tfrac12\log q+\log3\),
+\((1+1/k)\log3<2\), and \(\log P/(P-1)\le1/2\). The coefficient of
+\(\log q\) is \(\tfrac12(1+1/k)\le2/3\).
+
+\Needspace{14\baselineskip}
+\medskip
+\noindent\textit{Divisibility by a smaller bad prime.}
+Let \(p\) be a prime such that \(k\le p<P\) and \(\chi(p)=-1\). For
+each row we write \(r=ph+c\), where \(h=\fl{r/p}\) and \(0\le c<p\),
+and replace its monomial by
+\begin{equation}\label{eq:rowchange}
+ z^c(z^p-w)^hw^s
+ =z^rw^s+\sum_{i=1}^h(-1)^i\binom hi z^{r-pi}w^{s+i}.
+\end{equation}
+For example, if \(r=7\) and \(p=3\), the row change is
+\[
+ z^7w^s\longmapsto z(z^3-w)^2w^s
+   =z^7w^s-2z^4w^{s+1}+zw^{s+2}.
+\]
+The two additional monomials have smaller \(z\)-degree; when
+\(\chi(3)=-1\), every evaluated coordinate in the new row is divisible by
+\(3^2\).
+All the new exponent pairs remain in \(\mathcal T\), since
+\[
+ (r-pi)+k(s+i)=r+ks-i(p-k)\le n,
+\]
+and they have smaller \(z\)-degree. Hence, when the rows are ordered by
+increasing \(r\), the replacements are given by an integer lower triangular
+matrix with diagonal entries 1 and leave the fixed minor \(D\) unchanged.
+By \eqref{eq:stable}, both integer coordinates in the new row are divisible
+by \(p^h\). Factoring these powers from the rows gives
+\[
+ v_p(D)\ge\sum_{(r,s)\in\mathcal T}\fl{r/p}\ge U/p-t.
+\]
+
+\medskip
+\noindent\textit{Comparison of the two estimates.}
+Since \(D\) is a nonzero integer, unique factorization gives
+\[
+ \log|D|=\sum_{\ell\mid D}v_\ell(D)\log\ell,
+\]
+where the sum is over the prime divisors of \(D\). Retaining only the primes
+\(k\le p<P\) for which \(\chi(p)=-1\), and then using
+Theorem~\ref{thm:primeestimates}, we obtain
+\begin{align*}
+ \log|D|
+ &\ge U\sum_{\substack{k\le p<P\\\chi(p)=-1}}\frac{\log p}{p}
+       -t\vartheta(P-1)\\
+ &\ge U\sum_{\substack{k\le p<P\\\chi(p)=-1}}\frac{\log p}{p}-12U,
+\end{align*}
+where we used \((P-1)t\le3U\). The primes below \(k\), including the
+prime 2, contribute at most \(\log k+5\), and the prime \(P\) contributes
+at most 1. By the choice of \(P\), we have \(S_-(X)=S_-(P)\), and hence
+\[
+ S_-(X)\le\frac{\log|D|}{U}+12+\log k+5+1.
+\]
+Together with \eqref{eq:size}, this proves \eqref{eq:primeweight} and
+completes the proof.
+\end{proof}
+
+\section{A lower bound for \texorpdfstring{\(S_-(X)\)}{S-(X)}}
+\label{sec:bridge}
+
+We return to the nonnegative divisor sum of Theorem 6.19. Let
+\[
+ A(n)=\sum_{a\mid n}\chi(a),\qquad
+ B_\beta(x)=\sum_{n\le x}\frac{A(n)}{n^\beta},\qquad 0<\beta<1.
+\]
+By that theorem, \(A(n)\ge0\) and \(A(1)=1\); consequently
+\(B_\beta(x)\ge1\) for \(x\ge1\). We shall use also
+\begin{equation}\label{eq:monotonicity}
+ A(pn)\ge A(n)\qquad\text{if }\chi(p)\ge0.
+\end{equation}
+By Theorem 2.14, \(A\) is multiplicative. The prime-power values in the
+proof of Theorem 6.19 are \(A(p^e)=e+1\) if
+\(\chi(p)=1\) and \(A(p^e)=1\) if \(\chi(p)=0\).
+They are nondecreasing in \(e\), which proves
+\eqref{eq:monotonicity}, including the case \(p\mid n\).
+
+The following finite-sum inequality relates these auxiliary sums to
+the prime weight \(S_-\).
+
+\begin{lemma}\label{lem:bridge}
+If \(0<\beta<1\), \(X\ge2\), and \(Y>1\), then
+\begin{equation}\label{eq:bridge}
+ S_-(X)\ge2\log X
+       -\frac{B_\beta(XY)}{B_\beta(Y)}\log(XY)-5.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Let \(T=XY\), and denote by \(S_{\ge0}(X)\) the sum
+of \((\log p)/p\) over the primes \(p\le X\) with \(\chi(p)\ge0\).
+It includes the primes dividing \(q\), and is complementary to
+\(S_-(X)\) in the full prime sum. For \(p\le X\),
+\(T/p\ge Y\). Since \(A(n)\ge0\), the function \(B_\beta(x)\) is
+nondecreasing, and hence \(B_\beta(T/p)\ge B_\beta(Y)\). We also have
+\(p^{-\beta}\ge p^{-1}\). Therefore
+\begin{align*}
+ B_\beta(Y)S_{\ge0}(X)
+ &\le\sum_{\substack{p\le X\\\chi(p)\ge0}}
+       \frac{\log p}{p^\beta}B_\beta(T/p)\\
+ &=\sum_{n\le T}\frac1{n^\beta}
+       \sum_{\substack{p\mid n,\ p\le X\\\chi(p)\ge0}}
+                    A(n/p)\log p\\
+ &\le\sum_{n\le T}\frac{A(n)}{n^\beta}\sum_{p\mid n}\log p
+ \le\sum_{n\le T}\frac{A(n)}{n^\beta}\log n.
+\end{align*}
+Here we used \eqref{eq:monotonicity} and the fact that the product of the
+distinct primes dividing \(n\) divides \(n\).
+
+We separate the terms with \(n\le Y\) from those with \(Y<n\le T\).
+Using \(\log n\le\log Y\) in the first sum and \(\log n\le\log T\) in the
+second, we obtain
+\begin{align*}
+ \sum_{n\le T}\frac{A(n)}{n^\beta}\log n
+ &\le B_\beta(Y)\log Y
+   +\bigl(B_\beta(T)-B_\beta(Y)\bigr)\log T\\
+ &=B_\beta(T)\log T-B_\beta(Y)\log X.
+\end{align*}
+This is also an upper bound for \(B_\beta(Y)S_{\ge0}(X)\).
+After division by \(B_\beta(Y)>0\), we subtract this inequality from the
+lower bound \(\log X-5\) for the full prime sum in
+Theorem~\ref{thm:primeestimates}, and obtain \eqref{eq:bridge}.
+\end{proof}
+
+\section{Weighted divisor sums at a real zero}
+\label{sec:zero}
+
+We next estimate \(B_\beta(x)\) when \(L(\beta,\chi)=0\). As in the proof of
+Theorem 6.20, we use the hyperbola identity. We shall need an error estimate
+which is uniform for \(3/4\le\beta<1\). The zero will produce a main term
+involving \(L(1,\chi)\). The chief point is to combine two remaining tails
+before estimating them, so that their factors \(1/(1-\beta)\) cancel.
+
+For \(\sigma>0\), let
+\[
+ R_\sigma(u)=\sum_{n>u}\frac{\chi(n)}{n^\sigma},\qquad
+ L_\sigma(u)=\sum_{n\le u}\frac{\chi(n)}{n^\sigma}.
+\]
+The periodic cancellation in the proof of Theorem 6.17 gives
+\(|C_\chi(t)|\le\varphi(q)\le q\), where
+\(C_\chi(t)=\sum_{n\le t}\chi(n)\). If we apply Abel's identity
+(Theorem 4.2) and let the upper endpoint tend to infinity, we obtain
+\begin{equation}\label{eq:tail}
+ R_\sigma(u)=-C_\chi(u)u^{-\sigma}
+       +\sigma\int_u^\infty C_\chi(v)v^{-\sigma-1}\,dv,
+ \qquad |R_\sigma(u)|\le2qu^{-\sigma}.
+\end{equation}
+The integral is absolutely convergent. This gives the estimate from
+Theorem 6.17 which we shall use.
+
+\Needspace{12\baselineskip}
+Let \(\delta=1-\beta\) and
+\(H_\beta(v)=\sum_{n\le v}n^{-\beta}\). The proof of Theorem 3.2(b) gives,
+more precisely,
+\begin{equation}\label{eq:powersum}
+ H_\beta(v)=\frac{v^\delta}{\delta}+\zeta(\beta)+e_\beta(v),
+ \qquad |e_\beta(v)|\le2v^{-\beta}\quad(v\ge1).
+\end{equation}
+Here \(\zeta(\beta)\) denotes the constant occurring in Theorem 3.2(b),
+not the sum of a convergent infinite series when \(0<\beta<1\).
+In fact, if \(\{y\}=y-\fl y\), that proof gives
+\[
+ e_\beta(v)=-\{v\}v^{-\beta}
+   +\beta\int_v^\infty\{y\}y^{-\beta-1}\,dy,
+\]
+and the estimate follows from \(0\le\{y\}<1\).
+
+\begin{lemma}\label{lem:model}
+If \(3/4\le\beta<1\) and \(L(\beta,\chi)=0\), then for \(x\ge1\),
+\begin{equation}\label{eq:model}
+ B_\beta(x)=\frac{L(1,\chi)}{\delta}x^\delta+E(x),
+ \qquad |E(x)|\le10q x^{-1/4}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Let \(u=\sqrt x\). The hyperbola identity (Theorem 3.17), applied to
+\(f(a)=\chi(a)a^{-\beta}\) and \(g(b)=b^{-\beta}\), gives
+\begin{equation}\label{eq:hyperbola}
+ B_\beta(x)=\sum_{a\le u}\frac{\chi(a)}{a^\beta}H_\beta(x/a)
+  +\sum_{b\le u}\frac1{b^\beta}L_\beta(x/b)
+  -H_\beta(u)L_\beta(u).
+\end{equation}
+On inserting \eqref{eq:powersum} into the first and last terms, the two
+terms \(\zeta(\beta)L_\beta(u)\) cancel. Since \(\beta+\delta=1\),
+we obtain
+\begin{equation}\label{eq:intermediate}
+ B_\beta(x)=\frac{x^\delta}{\delta}L_1(u)
+       -\frac{u^\delta}{\delta}L_\beta(u)+E_0(x).
+\end{equation}
+Here the error term is
+\[
+\begin{aligned}
+ E_0(x)={}&
+ \sum_{a\le u}\frac{\chi(a)}{a^\beta}e_\beta(x/a)
+ +\sum_{b\le u}\frac1{b^\beta}L_\beta(x/b)\\
+ &-e_\beta(u)L_\beta(u).
+\end{aligned}
+\]
+Since \(L(\beta,\chi)=0\), we have \(L_\beta(v)=-R_\beta(v)\), so
+\eqref{eq:tail} bounds the three errors by
+\begin{align*}
+ \left|\sum_{a\le u}\frac{\chi(a)}{a^\beta}e_\beta(x/a)\right|
+   &\le2u x^{-\beta}=2u^{1-2\beta},\\
+ \left|\sum_{b\le u}\frac1{b^\beta}L_\beta(x/b)\right|
+   &\le2qu x^{-\beta}=2qu^{1-2\beta},\\
+ |e_\beta(u)L_\beta(u)|&\le4qu^{-2\beta}\le4qu^{1-2\beta}.
+\end{align*}
+Consequently \(|E_0(x)|\le(2+6q)u^{1-2\beta}\).
+
+The two terms outside \(E_0(x)\) must not be estimated separately: each
+contains the large factor \(1/\delta\). Their difference is much smaller.
+Indeed, \(R_\beta(u)\) is obtained from the tail \(R_1(u)\) by inserting
+the weight \(n^\delta\), and Abel summation exposes a compensating factor
+\(\delta\). Put \(a_n=\chi(n)/n\), so that
+\(R_1(v)=\sum_{n>v}a_n\). For \(W>u\), Abel's identity (Theorem 4.2),
+applied to \(a_n\) and the weight \(v^\delta\), gives
+\[
+ \sum_{u<n\le W}\frac{\chi(n)}{n^\beta}
+ =u^\delta R_1(u)-W^\delta R_1(W)
+       +\delta\int_u^W v^{-\beta}R_1(v)\,dv.
+\]
+By \eqref{eq:tail}, the boundary term at \(W\) tends to zero and
+the integral converges absolutely. Therefore
+\begin{equation}\label{eq:cancellation}
+ \frac{R_\beta(u)-u^\delta R_1(u)}{\delta}
+  =\int_u^\infty v^{-\beta}R_1(v)\,dv,
+ \qquad
+ \left|\int_u^\infty v^{-\beta}R_1(v)\,dv\right|
+       \le\frac{2q}{\beta}u^{-\beta}\le3qu^{-\beta}.
+\end{equation}
+Using \(L_1(u)=L(1,\chi)-R_1(u)\),
+\(L_\beta(u)=-R_\beta(u)\), and \(x=u^2\) in
+\eqref{eq:intermediate}, we find
+\[
+ B_\beta(x)=\frac{L(1,\chi)}{\delta}x^\delta
+    +u^\delta\int_u^\infty v^{-\beta}R_1(v)\,dv+E_0(x).
+\]
+The error is at most
+\[
+ (2+9q)u^{1-2\beta}\le10q x^{1/2-\beta}\le10q x^{-1/4},
+\]
+because \(q\ge3\) and \(\beta\ge3/4\). This proves
+\eqref{eq:model}.
+\end{proof}
+
+We have the following consequence.
+
+\begin{theorem}\label{thm:bias}
+Under the hypotheses of Lemma~\ref{lem:model}, let \(X\ge2\),
+\(Y>1\), and \(\rho=10qY^{-1/4}\). Then
+\begin{equation}\label{eq:zerobias}
+ S_-(X)\ge2\log X
+       -\bigl((1+\rho)X^\delta+\rho\bigr)\log(XY)-5.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+We apply \eqref{eq:model} at \(XY\) and \(Y\). The coefficient
+\(L(1,\chi)/\delta\) cancels, and we obtain
+\[
+ B_\beta(XY)=X^\delta B_\beta(Y)+E(XY)-X^\delta E(Y).
+\]
+The two error terms satisfy \(|E(XY)|\le\rho\) and \(|E(Y)|\le\rho\). Since
+\(B_\beta(Y)\ge1\), we have
+\[
+ \frac{B_\beta(XY)}{B_\beta(Y)}
+ =X^\delta+\frac{E(XY)-X^\delta E(Y)}{B_\beta(Y)}
+ \le X^\delta+\rho+\rho X^\delta
+ =(1+\rho)X^\delta+\rho.
+\]
+Since the coefficient of this ratio in \eqref{eq:bridge} is negative,
+the last inequality gives \eqref{eq:zerobias}.
+\end{proof}
+
+\section{Exclusion of real zeros near 1}
+\label{sec:finish}
+
+We can now complete the proof of Theorem~\ref{thm:main}.
+We choose
+\begin{equation}\label{eq:parameters}
+ Q=10q,\qquad k=64,\qquad X=Q^{128},\qquad Y=Q^8.
+\end{equation}
+These choices have separate purposes. The value \(Q=10q\) ensures
+\(Q\ge30\). The value \(k=64\) makes the leading coefficient in the
+determinant bound comfortably smaller than \(2/3\). The choice \(Y=Q^8\)
+makes the relative error at most \(1/30\). Finally, \(X=Q^{128}\) is large
+enough compared with \(Y\) for the lower estimate to exceed
+\((3/4)\log X\), while the contrary assumption still keeps
+\((1-\beta)\log X\) small.
+Thus \(XY=Q^{136}\), and
+\(\rho=10qY^{-1/4}=Q^{-1}\le1/30\).
+
+\begin{proof}[\normalfont\scshape Proof of Theorem~\ref{thm:main}]
+Suppose \(L(\beta,\chi)=0\). If \(0<\beta\le3/4\), then
+\[
+ (1-\beta)\log q\ge\frac14\log3>10^{-6},
+\]
+and the theorem follows. We may therefore assume that \(3/4<\beta<1\).
+Let \(\delta=1-\beta\), and suppose, to the contrary, that
+\(\delta\le10^{-6}/\log q\).
+Let \(\ell=\log Q>3\). By Theorem~\ref{thm:primeweight},
+\begin{align}
+ S_-(X)&\le\left(\frac12+\frac7{128}\right)128\ell
+                 +\log q+\log64+23\notag\\
+       &<72\ell+29<82\ell
+        =\frac{41}{64}\log X<\frac23\log X.
+        \label{eq:upperfinal}
+\end{align}
+Here \(\log q<\ell\), \(\log64<6\), and \(29<10\ell\).
+
+On the other hand, \(\log10<3\) and \(\log q>1\) give
+\[
+ 0<\delta\log X
+ \le128\cdot10^{-6}\left(1+\frac{\log10}{\log q}\right)
+ <512\cdot10^{-6}<\frac1{1000}.
+\]
+For \(0\le v<1\), comparison of the power series gives
+\(e^v\le(1-v)^{-1}\). Thus \(X^\delta\le1000/999\), and
+\[
+ (1+\rho)X^\delta+\rho
+ \le\frac{31}{30}\frac{1000}{999}+\frac1{30}
+ =\frac{31999}{29970}<1.07<\frac98.
+\]
+Theorem~\ref{thm:bias} now gives
+\[
+ S_-(X)>256\ell-\frac98\,136\ell-5
+       =103\ell-5>96\ell=\frac34\log X,
+\]
+where \(7\ell>5\) was used. This contradicts
+\eqref{eq:upperfinal}, and proves the theorem.
+\end{proof}
+
+\clearpage
+\pdfbookmark[1]{Exercises}{exercises-continued}
+\section*{Exercises}
+\markright{Exercises}
+
+\small
+\begin{enumerate}[start=21,itemsep=7pt,topsep=3pt]
+\item Let \(\chi\) be a real nonprincipal character mod \(m\), induced by
+a primitive character \(\chi^*\) mod \(q\). Prove that \(L(s,\chi)\) and
+\(L(s,\chi^*)\) have the same real zeros for \(0<s<1\). Deduce from
+Theorem~\ref{thm:main} that every such zero \(\beta\) satisfies
+\[
+ (1-\beta)\log m\ge10^{-6}.
+\]
+
+\item Under the hypotheses of Lemma~\ref{lem:model}, prove that
+\(L(1,\chi)>0\) and that
+\[
+ B_\beta(x)\sim
+ \frac{L(1,\chi)}{1-\beta}\,x^{1-\beta}
+ \qquad(x\to\infty).
+\]
+
+\item A refinement attributed to K. Barreto improves the dependence on
+the conductor in Theorem~\ref{thm:primeweight}. Let \(P\ge5\) be the
+largest prime not exceeding \(X\) for which \(\chi(P)=-1\), and suppose
+that \(q\le P^2\).
+\begin{enumerate}[label=(\alph*),leftmargin=1.8em,itemsep=2pt,topsep=2pt]
+\item Choose \(P\) elements \(\alpha=x+y\sqrt d\) of \(\cO\), pairwise
+incongruent modulo \(P\cO\), such that
+\[
+ |\alpha|,|\alpha'|<4P^{1/2}q^{1/4}.
+\]
+\textit{Hint.} Use a rectangle whose side lengths are close to
+\(P^{1/2}q^{1/4}\) and \(P^{1/2}q^{-1/4}\).
+\item Use these points in the determinant argument of Sections 10.17--10.18
+to prove, for every \(k\ge3\),
+\[
+ S_-(P)\le\left(\frac12+\frac7{2k}\right)\log P
+ +\frac{k+1}{4k}\log q+\log k+O(1),
+\]
+where the constant in \(O(1)\) is absolute and effective.
+\item Take \(k=\lceil\log P\rceil\), treating the bounded values of \(P\)
+separately. Split into the cases \(q\le P^2\) and \(q>P^2\), and prove
+uniformly for \(X\ge3\) that
+\[
+ S_-(X)\le\frac12\log X+\frac14\log q+\log\log X+O(1).
+\]
+\end{enumerate}
+\end{enumerate}
+\normalsize
+
+\clearpage
+\pdfbookmark[1]{Notes and references}{notes-and-references}
+\section*{Notes and references}
+\markright{Notes and references}
+
+The section numbers, theorem numbers, and equation numbers continue
+Chapter 10 of Apostol \cite{apostol}. References to earlier numbered
+theorems and exercises are to that book. These sections are newly prepared
+text and do not form part of the original 1976 edition.
+
+The terminology and historical summary in Section 10.14 follow the standard
+account in Chapter 11 of \cite{montgomery}. Siegel's ineffective estimate
+comes from his
+1935 class-number paper \cite{siegel}. The repulsion associated with an
+exceptional zero grew out of the class-number work of Deuring \cite{deuring}
+and Heilbronn \cite{heilbronn}; elementary later treatments include Pintz
+\cite{pintz} and Stopple \cite{stopple}.
+
+The nonvanishing principles behind interpolation determinants go back to
+Masser \cite{masser} and Laurent \cite{laurent}; the related adelic polynomial
+method appears in Bombieri--Vaaler \cite{bombieri}. The multiplicity principle
+goes back to Stepanov \cite{stepanov}. The use of an integer minor is attributed
+to Barreto \cite{barreto} in the Pescador manuscript. The refinement in
+Exercise 23 is likewise attributed there to Barreto; both attributions are
+indirect here.
+
+Bostan--Dumas \cite{bostan} discusses Wronskians and linear independence, and
+Rosser--Schoenfeld \cite{rosser} gives sharper explicit prime estimates. None
+of these deeper results is required above. This presentation claims no new
+theorem or priority.
+
+\titlespacing*{\section}{0pt}{8pt}{4pt}
+\begin{thebibliography}{99}
+\footnotesize\raggedright
+\interlinepenalty=10000
+\setlength{\itemsep}{0pt}
+\setlength{\parskip}{0pt}
+
+\bibitem{openai}
+OpenAI (2026). \emph{Uniform exclusion of Landau--Siegel zeros}.
+OpenAI Math Release preprint, 1 October 2026.
+\href{https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Uniform-exclusion-of-Landau-Siegel-zeros-October-1-2026/paper.pdf}
+{Manuscript at a fixed revision}.
+
+\bibitem{green}
+Green, Ben (2026). On Landau--Siegel zeros. Hexagon preprint, version 2.
+\href{https://hexagonmath.org/2610.00311v2}{hexagon:2610.00311v2}.
+
+\bibitem{stepanovnote}
+GPT-6 Pro and Claude Opus 5.5 (2026). \emph{Landau--Siegel zeros and a
+Stepanov-type nonvanishing lemma}. Preprint posted by J. Pescador, version 2.
+\href{https://jacobpescador.github.io/ai-math/papers/landau-siegel-stepanov/}
+{Version history and manuscript}.
+
+\bibitem{barreto}
+Barreto, K. (2026). \emph{An elementary proof of the non-existence of
+Landau--Siegel zeros}. Unpublished manuscript. Cited indirectly through
+\cite{stepanovnote} and \cite{vandijk}.
+
+\bibitem{banks}
+Banks, William D. (2026). On the OpenAI proof that Landau--Siegel zeros
+do not exist. Preprint, version 1.
+\href{https://arxiv.org/abs/2610.15483v1}{arXiv:2610.15483v1}.
+
+\bibitem{kerr}
+Kerr, Bryce (2026). A simpler proof that there are no Landau--Siegel zeros.
+Preprint, version 1.
+\href{https://arxiv.org/abs/2610.21099v1}{arXiv:2610.21099v1}.
+
+\bibitem{tao}
+Tao, Terence (2026). A sketch of the proof of non-existence of Siegel
+zeroes. \emph{What's New}, 19 October 2026.
+\href{https://terrytao.wordpress.com/2026/10/19/a-sketch-of-the-proof-of-non-existence-of-siegel-zeroes/}
+{Online exposition}.
+
+\bibitem{vandijk}
+van Dijk, Rob (2026). A Frobenius determinant proof of the non-existence of
+Landau--Siegel zeros. Hexagon preprint, version 2.
+\href{https://hexagonmath.org/2610.00409v2}{hexagon:2610.00409v2}.
+
+\bibitem{apostol}
+Apostol, Tom M. (1976). \emph{Introduction to Analytic Number Theory}.
+New York: Springer-Verlag.
+
+\bibitem{montgomery}
+Montgomery, Hugh L., and Robert C. Vaughan (2006).
+\emph{Multiplicative Number Theory I. Classical Theory}. Cambridge:
+Cambridge University Press.
+
+\bibitem{siegel}
+Siegel, Carl Ludwig (1935). \"Uber die Classenzahl quadratischer
+Zahlk\"orper. \emph{Acta Arith.} \textbf{1}: 83--86.
+\href{https://doi.org/10.4064/aa-1-1-83-86}
+{doi:10.4064/aa-1-1-83-86}.
+
+\bibitem{deuring}
+Deuring, Max (1933). Imagin\"are quadratische Zahlk\"orper mit der
+Klassenzahl 1. \emph{Math. Z.} \textbf{37}: 405--415.
+\href{https://doi.org/10.1007/BF01474583}{doi:10.1007/BF01474583}.
+
+\bibitem{heilbronn}
+Heilbronn, Hans (1934). On the class-number in imaginary quadratic fields.
+\emph{Quart. J. Math. Oxford Ser.} \textbf{5}: 150--160.
+\href{https://doi.org/10.1093/qmath/os-5.1.150}
+{doi:10.1093/qmath/os-5.1.150}.
+
+\bibitem{pintz}
+Pintz, J\'anos (1976). Elementary methods in the theory of \(L\)-functions,
+IV: The Heilbronn phenomenon. \emph{Acta Arith.} \textbf{31}: 419--429.
+\href{https://eudml.org/doc/205524}{EuDML:205524}.
+
+\bibitem{stopple}
+Stopple, Jeffrey (2012). Elementary Deuring--Heilbronn phenomenon.
+\emph{Acta Arith.} \textbf{156}: 283--291.
+\href{https://doi.org/10.4064/aa156-3-5}{doi:10.4064/aa156-3-5}.
+
+\bibitem{masser}
+Masser, David W. (1981). On polynomials and exponential polynomials in
+several complex variables. \emph{Invent. Math.} \textbf{63}: 81--95.
+\href{https://doi.org/10.1007/BF01389194}{doi:10.1007/BF01389194}.
+
+\bibitem{laurent}
+Laurent, Michel (1991). Sur quelques r\'esultats r\'ecents de transcendance.
+\emph{Ast\'erisque} \textbf{198--200}: 209--230.
+\href{https://www.numdam.org/item/AST_1991__198-199-200__209_0/}
+{Numdam full text}.
+
+\bibitem{bombieri}
+Bombieri, Enrico, and Jeffrey Vaaler (1983). On Siegel's lemma.
+\emph{Invent. Math.} \textbf{73}: 11--32.
+\href{https://eudml.org/doc/143033}{EuDML:143033}.
+
+\bibitem{stepanov}
+Stepanov, Sergei A. (1969). On the number of points of a hyperelliptic
+curve over a finite prime field. \emph{Math. USSR-Izv.} \textbf{3}:
+1103--1114.
+
+\bibitem{bostan}
+Bostan, Alin, and Philippe Dumas (2010). Wronskians and linear
+independence. \emph{Amer. Math. Monthly} \textbf{117}: 722--727.
+\href{https://doi.org/10.4169/000298910X515785}
+{doi:10.4169/000298910X515785}.
+
+\bibitem{rosser}
+Rosser, J. Barkley, and Lowell Schoenfeld (1962). Approximate formulas for
+some functions of prime numbers. \emph{Illinois J. Math.} \textbf{6}: 64--94.
+\href{https://doi.org/10.1215/ijm/1255631807}
+{doi:10.1215/ijm/1255631807}.
+
+\end{thebibliography}
+
+\end{document}
