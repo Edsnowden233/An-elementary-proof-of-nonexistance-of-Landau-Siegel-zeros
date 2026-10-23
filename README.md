@@ -1,4 +1,4 @@
-# An elementary proof of nonexistence of Landau Siegel zeros
+# An elementary proof of nonexistence of Landau-Siegel zeros
 
 An expository continuation of Chapter 10 of Tom M. Apostol's
 *Introduction to Analytic Number Theory*, covering Sections 10.14--10.21.
