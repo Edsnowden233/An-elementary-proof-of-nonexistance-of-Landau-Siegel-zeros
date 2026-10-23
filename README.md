@@ -49,7 +49,7 @@ and preparing the LaTeX manuscript.
 ## Files
 
 - [LaTeX source](apostol_chapter10_sections_10_14_onward.tex)
-- [Compiled PDF](pdf/apostol_chapter10_sections_10_14_onward.pdf)
+- [Compiled PDF](apostol_chapter10_sections_10_14_onward.pdf)
 
 ## Scope and attribution
 
